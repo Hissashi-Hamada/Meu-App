@@ -10,8 +10,7 @@
                 @isset($breadcrumbs)
                     <ol class="breadcrumb">
                         @foreach ( $breadcrumbs as $breadcrumb )
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                            <li class="breadcrumb-item"><a href="#">{{ $breadcrumb['label']}}</a></li>
                         @endforeach
                     </ol>                           
                 @endisset

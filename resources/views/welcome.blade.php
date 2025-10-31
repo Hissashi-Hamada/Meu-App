@@ -5,7 +5,6 @@
 @php
 $breadcrumbs = [
     ['label' => 'Home', 'route' => '#'],
-    ['label' => 'Dashboard', 'route' => null],
 ]; 
 @endphp
 
