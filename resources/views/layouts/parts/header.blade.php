@@ -156,7 +156,7 @@
                   alt="User Image"
                 />
                 <span class="d-none d-md-inline">
-                  
+                  {{  auth()->user()->name }}
                 </span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
