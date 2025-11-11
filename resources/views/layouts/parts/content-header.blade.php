@@ -17,8 +17,8 @@
                 
               </div>
 
-              <div class="col-sm-6">
-
+              <div class="col-sm-6 text-end">
+                @yield('page-actions')
               </div>
             </div>
             <!--end::Row--></div></div>
