@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserProfile;
+use App\Models\Role;
 
 
 class UserController extends Controller
@@ -39,8 +40,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $user->load('profile');  
-        return view('users.edit', compact('user'));
+        $user->load(['profile', 'interests']);  
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(User $user, Request $request)
@@ -77,10 +79,19 @@ class UserController extends Controller
 
      public function updateInterests(User $user, Request $request)
     {
-        dd($request->all());
+
         $input = $request->validate([
-            'interests' => 'required|array',
+            'interests' => 'nullable|array',
         ]);
+
+        $user->interests()->delete();
+
+        if (!empty($input['interests'])) {
+            $user->interests() ->createMany($input['interests']);
+        }
+    
+        return back()
+            ->with('status', 'Usuário editado com sucesso.');
     }
 
     

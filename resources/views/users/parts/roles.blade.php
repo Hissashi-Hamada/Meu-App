@@ -5,32 +5,32 @@
   >
       @csrf
       @method('PUT')
-    <div class="card-header">
-        Interesses
+      <div class="card-header">
+          roles
     </div>
 
+    {{ dd($roles) }}
+
     <div class="card-body">
-      @foreach (['Futebol', 'Formula 1'] as $item) 
+      @foreach ($roles as $role) 
         <div class="form-check">
           <input 
-            class="form-check-input  @error('interests') is-invalid @enderror "
+            class="form-check-input @error('roles') is-invalid @enderror " 
             type="checkbox"
-            value="{{ $item }}"
-            name="interests[] [name]"
-            @checked(in_array($item, $user->interests->pluck('name')->toArray()));
-          >
+            value="{{ $role->id }}"
+            name="roles[] [name]"
+            >
+                    {{-- @checked(in_array($item, $user->interests->pluck('name')->toArray())); --}}
           <label class="form-check-label">
             {{ $item }}
           </label>
 
-          @if($loop->last)
-          
-              @error('interests') 
+          @if($role->last)
+              @error('roles') 
                   <div class="invalid-feedback">
-                      {{ $message }}
+                      {{ $role->name }}
                   </div>
               @enderror
-              
           @endif
           
         </div>
