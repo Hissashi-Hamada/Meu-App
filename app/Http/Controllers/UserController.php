@@ -7,16 +7,25 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\UserProfile;
 use App\Models\Role;
 use Illuminate\Pagination\Paginator;
-
-
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::paginate(); 
-        return view('users.index', compact('users'));
-    }
+public function index(Request $request)
+{
+    $users = User::query();
+
+    $users->when($request->keyword, function ($query, $keyword) {
+        $query->where(function ($q) use ($keyword) {
+            $q->where('name', 'like', '%' . $keyword . '%')
+            ->orWhere('email','like', '%' . $keyword . '%');
+        });
+    });
+
+    $users = $users->paginate();
+
+    return view('users.index', compact('users'));
+}
 
     public function create()
     {
@@ -42,6 +51,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        Gate::authorize('edit', User::class);
+
         $user->load(['profile', 'interests']);  
         $roles = Role::all();
         return view('users.edit', compact('user', 'roles'));
@@ -82,6 +93,7 @@ class UserController extends Controller
      public function updateInterests(User $user, Request $request)
     {
 
+        Gate::authorize('edit', User::class);
         $input = $request->validate([
             'interests' => 'nullable|array',
         ]);
@@ -108,6 +120,7 @@ class UserController extends Controller
 
     public function updateRoles(User $user, Request $request)
     {
+        Gate::authorize('edit', User::class);
         $input = $request->validate([
             'roles' => 'required|array',
         ]);
