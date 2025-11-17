@@ -32,7 +32,11 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::dropIfExists('roles');
-    }
+{
+    Schema::dropIfExists('roles_user');
+    Schema::dropIfExists('roles');
+}
+
+
+
 };

@@ -6,13 +6,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserProfile;
 use App\Models\Role;
+use Illuminate\Pagination\Paginator;
+
 
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all(); 
+        $users = User::paginate(); 
         return view('users.index', compact('users'));
     }
 
@@ -87,9 +89,31 @@ class UserController extends Controller
         $user->interests()->delete();
 
         if (!empty($input['interests'])) {
-            $user->interests() ->createMany($input['interests']);
+            $items = array_map(function ($value) {
+                return ['name' => $value];
+            }, $input['interests']);
+
+            $user->interests()->createMany($items);
         }
+
+        /*
+            if (!empty($input['interests'])) {
+                $user->interests()->createMany($input['interests']);
+            }
+        */
     
+        return back()
+            ->with('status', 'Usuário editado com sucesso.');
+    }
+
+    public function updateRoles(User $user, Request $request)
+    {
+        $input = $request->validate([
+            'roles' => 'required|array',
+        ]);
+
+        $user->roles()->Sync($input['roles']);
+        
         return back()
             ->with('status', 'Usuário editado com sucesso.');
     }

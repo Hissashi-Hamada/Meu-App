@@ -24,13 +24,11 @@
           </label>
 
           @if($loop->last)
-          
-              @error('interests') 
-                  <div class="invalid-feedback">
-                      {{ $message }}
-                  </div>
-              @enderror
-              
+            @error('interests') 
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
           @endif
           
         </div>
